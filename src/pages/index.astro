@@ -45,11 +45,11 @@ const personSchema = JSON.stringify({
           </p>
         ) : (
           <nav class="commit-tree" aria-label="Recent posts">
-            <a class="commit-tree-head" href="/blog/" title="All posts">
+            <a class="commit-tree-head" href={`${import.meta.env.BASE_URL}blog/`} title="All posts">
               Blog
             </a>
             {posts.map((post) => (
-              <a href={`/blog/${post.slug}/`}>
+              <a href={`${import.meta.env.BASE_URL}blog/${post.slug}/`}>
                 {post.data.title}
                 <span class="commit-tree-date">
                   {post.data.date.toLocaleDateString("en", {
@@ -61,7 +61,7 @@ const personSchema = JSON.stringify({
                 </span>
               </a>
             ))}
-            <a href="/about/">Sobre</a>
+            <a href={`${import.meta.env.BASE_URL}about/`}>Sobre</a>
           </nav>
         )
       }

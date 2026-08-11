@@ -166,7 +166,11 @@ const postSchema = JSON.stringify({
         return;
       }
       // The comments service only exists on the public origin.
-      if (window.location.hostname !== "lucasrbordignon.dev") return;
+      if (
+        window.location.hostname !== "lucasrbordignon.dev" &&
+        window.location.hostname !== "lucasrbordignon.github.io"
+      )
+        return;
 
       w.remark_config = {
         host: REMARK_HOST,

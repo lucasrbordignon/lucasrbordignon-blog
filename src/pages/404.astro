@@ -18,8 +18,8 @@ import Layout from "../components/Layout.astro";
         publicada.
       </p>
       <div class="hero-actions">
-        <a class="button button-primary" href="/">Página inicial</a>
-        <a class="button button-secondary" href="/blog/">Blog</a>
+        <a class="button button-primary" href={import.meta.env.BASE_URL}>Página inicial</a>
+        <a class="button button-secondary" href={`${import.meta.env.BASE_URL}blog/`}>Blog</a>
       </div>
     </div>
   </main>

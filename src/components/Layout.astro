@@ -15,10 +15,10 @@ const {
   ogType = "website",
 } = Astro.props;
 
-const site = "https://lucasrbordignon.dev";
-const canonicalUrl = new URL(canonicalPath, site).toString();
+const cleanPath = canonicalPath.startsWith("/") ? canonicalPath.slice(1) : canonicalPath;
+const canonicalUrl = new URL(cleanPath, Astro.site).toString();
 // Replace public/assets/og.png with your own 1200x630 social preview image.
-const ogImageUrl = new URL("/assets/og.png", site).toString();
+const ogImageUrl = new URL("assets/og.png", Astro.site).toString();
 const currentPath = Astro.url.pathname;
 ---
 
@@ -31,14 +31,14 @@ const currentPath = Astro.url.pathname;
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f0eee9" />
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <link
       rel="alternate"
       type="application/rss+xml"
       title="Palette"
-      href="/rss.xml"
+      href={`${import.meta.env.BASE_URL}rss.xml`}
     />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" href={`${import.meta.env.BASE_URL}sitemap-index.xml`} />
 
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content="Palette" />
@@ -56,7 +56,7 @@ const currentPath = Astro.url.pathname;
 
     <link
       rel="preload"
-      href="/assets/jbm.woff2"
+      href={`${import.meta.env.BASE_URL}assets/jbm.woff2`}
       as="font"
       type="font/woff2"
       crossorigin
@@ -78,13 +78,13 @@ const currentPath = Astro.url.pathname;
         document.addEventListener("astro:after-swap", apply);
       })();
     </script>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href={`${import.meta.env.BASE_URL}css/style.css`} />
     <ClientRouter />
   </head>
   <body>
     <header class="site-header">
       <nav class="nav" aria-label="Primary navigation">
-        <a class="brand" href="/" aria-label="Palette Home">
+        <a class="brand" href={import.meta.env.BASE_URL} aria-label="Palette Home">
           <span>Lucas R. Bordignon</span>
         </a>
 
@@ -95,35 +95,35 @@ const currentPath = Astro.url.pathname;
             <span></span>
           </summary>
           <div class="nav-menu-panel">
-            <a href="/" aria-current={currentPath === "/" ? "page" : undefined}
+            <a href={import.meta.env.BASE_URL} aria-current={currentPath === import.meta.env.BASE_URL ? "page" : undefined}
               >Home</a
             >
             <a
-              href="/blog/"
-              aria-current={currentPath.startsWith("/blog")
+              href={`${import.meta.env.BASE_URL}blog/`}
+              aria-current={currentPath.startsWith(`${import.meta.env.BASE_URL}blog`)
                 ? "page"
                 : undefined}>Blog</a
             >
             <a
-              href="/about/"
-              aria-current={currentPath === "/about/" ? "page" : undefined}
+              href={`${import.meta.env.BASE_URL}about/`}
+              aria-current={currentPath === `${import.meta.env.BASE_URL}about/` ? "page" : undefined}
               >Sobre</a
             >
           </div>
         </details>
 
         <div class="nav-links">
-          <a href="/" aria-current={currentPath === "/" ? "page" : undefined}
+          <a href={import.meta.env.BASE_URL} aria-current={currentPath === import.meta.env.BASE_URL ? "page" : undefined}
             >Home</a
           >
           <a
-            href="/blog/"
-            aria-current={currentPath.startsWith("/blog") ? "page" : undefined}
+            href={`${import.meta.env.BASE_URL}blog/`}
+            aria-current={currentPath.startsWith(`${import.meta.env.BASE_URL}blog`) ? "page" : undefined}
             >Blog</a
           >
           <a
-            href="/about/"
-            aria-current={currentPath === "/about/" ? "page" : undefined}
+            href={`${import.meta.env.BASE_URL}about/`}
+            aria-current={currentPath === `${import.meta.env.BASE_URL}about/` ? "page" : undefined}
             >Sobre</a
           >
         </div>
@@ -192,7 +192,7 @@ const currentPath = Astro.url.pathname;
               <path d="m2 7 10 7 10-7"></path>
             </svg>
           </a>
-          <a class="nav-icon-link" href="/rss.xml" aria-label="RSS feed">
+          <a class="nav-icon-link" href={`${import.meta.env.BASE_URL}rss.xml`} aria-label="RSS feed">
             <svg
               viewBox="0 0 24 24"
               aria-hidden="true"
@@ -214,7 +214,7 @@ const currentPath = Astro.url.pathname;
     <slot />
 
     <footer class="footer">
-      <span>&copy; {new Date().getFullYear()} lucasrbordignon.dev</span>
+      <span>&copy; {new Date().getFullYear()} lucasrbordignon.github.io</span>
     </footer>
 
     <div class="theme-hint" id="theme-hint">

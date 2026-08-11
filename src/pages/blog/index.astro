@@ -33,7 +33,7 @@ const posts = (await getCollection("blog"))
           <div class="post-list">
             {posts.map((post, index) => (
               <article class="post-card">
-                <a class="post-card-link" href={`/blog/${post.slug}/`}>
+                <a class="post-card-link" href={`${import.meta.env.BASE_URL}blog/${post.slug}/`}>
                   <div>
                     <h2>
                       {post.data.title}
