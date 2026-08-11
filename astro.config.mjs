@@ -38,7 +38,7 @@ function pagefindDev() {
 
 export default defineConfig({
   site: 'https://lucasrbordignon.github.io',
-  base: '/lucasrbordignon-blog',
+  base: '/lucasrbordignon-blog/',
   // v7 default ('jsx') strips spaces between inline elements, which corrupts
   // Pagefind's text extraction of adjacent spans (e.g. job titles + dates).
   compressHTML: true,
