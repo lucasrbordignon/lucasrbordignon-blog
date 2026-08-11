@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../components/Layout.astro";
+import TypedLede from "../../components/TypedLede.astro";
+import SkillsMarquee from "../../components/SkillsMarquee.astro";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .map((post) => ({ ...post, slug: post.id.replace(/\.(md|mdx)$/i, "") }))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Layout
+  title="Blog — Lucas Rodrigues Bordignon"
+  description="Curioso por natureza, curioso por software. Desenvolvedor focado em performance e cloud. Escrevo e compartilho aqui sobre tecnologia e código."
+  canonicalPath="/blog/"
+>
+  <main class="content-shell">
+    <section class="page-hero">
+      <h1 class="visually-hidden">Blog</h1>
+      <TypedLede
+        text="Curioso por natureza, curioso por software. Desenvolvedor focado em performance e cloud. Escrevo e compartilho aqui sobre tecnologia e código."
+      />
+    </section>
+
+    <section class="section" aria-label="Blog posts">
+      {
+        posts.length === 0 ? (
+          <p class="empty-note">
+            Ainda não tenho posts, mas já já eu começo a postar... 😅
+          </p>
+        ) : (
+          <div class="post-list">
+            {posts.map((post, index) => (
+              <article class="post-card">
+                <a class="post-card-link" href={`/blog/${post.slug}/`}>
+                  <div>
+                    <h2>
+                      {post.data.title}
+                      {index === 0 && <span class="tag-latest">latest</span>}
+                    </h2>
+                    <p>{post.data.description}</p>
+                    <p class="post-card-meta">
+                      {post.data.date.toLocaleDateString("en", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        timeZone: "UTC",
+                      })}
+                    </p>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        )
+      }
+    </section>
+
+    <SkillsMarquee />
+  </main>
+</Layout>

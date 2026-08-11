@@ -1,0 +1,72 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../components/Layout.astro";
+import TypedLede from "../components/TypedLede.astro";
+import SkillsMarquee from "../components/SkillsMarquee.astro";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .map((post) => ({ ...post, slug: post.id.replace(/\.(md|mdx)$/i, "") }))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const personSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Lucas Rodrigues Bordignon",
+  jobTitle: "Software Engineer",
+  url: "https://lucasrbordignon.dev",
+  sameAs: [
+    "https://github.com/lucasrbordignon",
+    "https://linkedin.com/in/lucasrbordignon",
+  ],
+}).replace(/</g, "\\u003c");
+---
+
+<Layout
+  title="Lucas Rodrigues Bordignon"
+  description="Curioso por natureza, curioso por software. Desenvolvedor focado em performance e cloud. Escrevo e compartilho aqui sobre tecnologia e código."
+  canonicalPath="/"
+>
+  <script type="application/ld+json" is:inline set:html={personSchema} />
+  <main class="content-shell">
+    <div class="page-hero">
+      <h1 class="visually-hidden">Home</h1>
+      <TypedLede
+        text="Curioso por natureza, curioso por software. Desenvolvedor focado em performance e cloud. Escrevo e compartilho aqui sobre tecnologia e código."
+      />
+    </div>
+
+    <section class="section" aria-label="Recent posts">
+      {
+        posts.length === 0 ? (
+          <p class="empty-note">
+            Ainda não tenho posts, mas já já eu começo a postar... 😅
+          </p>
+        ) : (
+          <nav class="commit-tree" aria-label="Recent posts">
+            <a class="commit-tree-head" href="/blog/" title="All posts">
+              Blog
+            </a>
+            {posts.map((post) => (
+              <a href={`/blog/${post.slug}/`}>
+                {post.data.title}
+                <span class="commit-tree-date">
+                  {post.data.date.toLocaleDateString("en", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    timeZone: "UTC",
+                  })}
+                </span>
+              </a>
+            ))}
+            <a href="/about/">Sobre</a>
+          </nav>
+        )
+      }
+    </section>
+
+    <SkillsMarquee />
+  </main>
+</Layout>

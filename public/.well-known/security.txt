@@ -1,0 +1,4 @@
+Contact: mailto:[EMAIL_ADDRESS]
+Expires: 2027-07-01T00:00:00.000Z
+Canonical: https://lucasrbordignon.dev/.well-known/security.txt
+Preferred-Languages: en, pt-BR
